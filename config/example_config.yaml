@@ -1,0 +1,130 @@
+# Neural Radiance Field Configuration
+# Example configuration for Dynamic Scene Reconstruction
+
+# Model Configuration
+model:
+  name: "dynamic_nerf"
+  type: "instant_ngp"  # Options: instant_ngp, kilonerf, dynamic_nerf
+  
+  # Network architecture
+  network:
+    encoding:
+      type: "hash"  # Options: hash, frequency, spherical
+      n_levels: 16
+      n_features_per_level: 2
+      log2_hashmap_size: 19
+      base_resolution: 16
+      max_resolution: 2048
+    
+    mlp:
+      n_layers: 2
+      n_hidden: 64
+      activation: "relu"
+      skip_connections: [4]
+  
+  # Dynamic scene handling
+  temporal:
+    enabled: true
+    time_embedding_dim: 8
+    deformation_network:
+      n_layers: 3
+      n_hidden: 32
+
+# Training Configuration
+training:
+  batch_size: 4096
+  num_epochs: 100
+  learning_rate: 0.001
+  lr_decay: 0.1
+  lr_decay_steps: [50000, 100000]
+  
+  # Optimization
+  optimizer: "adam"
+  weight_decay: 0.0001
+  grad_clip: 1.0
+  
+  # Loss weights
+  loss:
+    rgb_weight: 1.0
+    depth_weight: 0.1
+    temporal_consistency_weight: 0.05
+  
+  # Checkpointing
+  checkpoint_dir: "./checkpoints"
+  save_frequency: 1000
+  keep_n_checkpoints: 5
+
+# Data Configuration
+data:
+  dataset_path: "./data/scene"
+  image_resolution: [640, 480]  # [width, height]
+  
+  # Camera settings
+  camera:
+    near_plane: 0.1
+    far_plane: 10.0
+    fov: 60.0
+  
+  # Data loading
+  num_workers: 4
+  cache_size: 1000  # MB
+  augmentation:
+    enabled: false
+    random_crop: false
+    color_jitter: false
+
+# Rendering Configuration
+rendering:
+  ray_marching:
+    num_samples: 128
+    num_importance_samples: 64
+    perturb: true
+  
+  # Output settings
+  output_dir: "./output"
+  render_resolution: [1280, 720]
+  fps: 30
+
+# Edge Device Optimization
+edge:
+  enabled: true
+  device: "jetson_xavier"  # Options: jetson_nano, jetson_xavier, jetson_orin
+  
+  # Memory optimization
+  max_gpu_memory: 8192  # MB
+  mixed_precision: true
+  gradient_checkpointing: true
+  
+  # Performance tuning
+  num_threads: 4
+  use_tensorrt: false
+  
+  # Power management
+  power_mode: "maxn"  # Options: maxn, balanced, efficiency
+
+# Logging and Monitoring
+logging:
+  level: "info"  # Options: debug, info, warning, error
+  tensorboard: true
+  tensorboard_dir: "./runs"
+  log_frequency: 100
+  
+  # Metrics to track
+  metrics:
+    - "loss"
+    - "psnr"
+    - "ssim"
+    - "fps"
+    - "memory_usage"
+
+# Evaluation Configuration
+evaluation:
+  metrics:
+    - "psnr"
+    - "ssim"
+    - "lpips"
+  test_split: 0.1
+  visualization:
+    save_renders: true
+    save_depth_maps: true
+    save_comparisons: true
