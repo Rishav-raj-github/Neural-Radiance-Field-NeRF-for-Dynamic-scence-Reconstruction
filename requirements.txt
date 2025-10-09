@@ -1,0 +1,43 @@
+# Core Deep Learning
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.24.0
+
+# Neural Radiance Fields
+tinycudann>=1.7
+
+# Computer Vision & Image Processing
+opencv-python>=4.8.0
+Pillow>=10.0.0
+imageio>=2.31.0
+imageio-ffmpeg>=0.4.9
+
+# 3D Processing & Visualization
+trimesh>=3.23.0
+pyrender>=0.1.45
+open3d>=0.17.0
+
+# Math & Scientific Computing
+scipy>=1.11.0
+scikit-image>=0.21.0
+
+# Metrics & Evaluation
+lpips>=0.1.4
+
+# Configuration & Utilities
+pyyaml>=6.0
+tqdm>=4.66.0
+tensorboard>=2.14.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Code Quality
+black>=23.7.0
+flake8>=6.1.0
+isort>=5.12.0
+
+# Edge Device Support (Optional - uncomment for Jetson)
+# jetson-stats>=4.2.0
+# pycuda>=2022.2
